@@ -1,0 +1,6 @@
+@SolarVoyage_HostAddress = http://localhost:5137
+
+GET {{SolarVoyage_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
