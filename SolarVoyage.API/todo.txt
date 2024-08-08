@@ -1,0 +1,8 @@
+- Add Cognito Auth service project
+- Add db integration
+- Add graphQL api layer
+- Add reddis caching using jwt
+- Add document upload functionality
+- Add queue for something 
+- Add email functionality
+- Add serilog logging
