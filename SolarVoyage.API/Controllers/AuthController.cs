@@ -8,7 +8,7 @@ using CoreModels = SolarVoyage.Core.Models;
 namespace SolarVoyage.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class AuthController: ControllerBase
 {
     private readonly IUserAuthService _authService;

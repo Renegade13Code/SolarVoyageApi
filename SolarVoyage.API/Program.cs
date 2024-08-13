@@ -1,12 +1,10 @@
-using System.Net;
 using System.Reflection;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SolarVoyage.API;
-using SolarVoyage.API.AutoMapper;
 using SolarVoyage.Aws.Cognito.Service;
 using SolarVoyage.Core;
-using System.Text.Json;
 using AutoMapper;
 
 //Setup API config file
@@ -40,6 +38,11 @@ builder.Services.AddAutoMapper((provider, expression) =>
 {
     expression.AddProfiles(provider.GetServices<Profile>());
 }, new List<Assembly>());
+
+builder.Services.Configure<JsonSerializerOptions>(options =>
+{
+    options.PropertyNameCaseInsensitive = true;
+});
 
 //Setup cognito authentication
 builder.Services.AddAuthentication(options =>

@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SolarVoyage.Core.Data;
+using SolarVoyage.Core.Services.Ships;
 using SolarVoyage.Core.Services.User;
 using SolarVoyage.Core.Services.UserAuth;
 
@@ -11,12 +14,13 @@ public static class Bootstrapper
     {
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserAuthService, UserAuthService>();
-
-        //Setup db
-        // services.AddDbContext<UserDbContext>(options =>
-        // {
-        //     options.UseNpgsql(configuration.GetConnectionString("ConnectionStrings.StickerFactory"), b => b.MigrationsAssembly("StickerFactory.API.Core"));
-        // });
+        services.AddScoped<IShipService, ShipService>();
+        
+        //Register the dbContext as a dependency for dependency injection
+        services.AddDbContext<SolarVoyageContext>(options =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString("ConnectionStrings:SolarVoyageDb"));
+        });
         
         return services;
     }
