@@ -72,19 +72,4 @@ public class AuthController: ControllerBase
         var signInResult = await _authService.PasswordSignInAsync(request.Username, request.Password, ct).ConfigureAwait(false);
         return Ok(signInResult.Value);
     }
-    
-    [Authorize]
-    [HttpGet]
-    [Route("Test")]
-    public Task<IActionResult> Test()
-    {
-        return Task.FromResult<IActionResult>(Ok("success :)"));
-    }
-    
-    [HttpGet]
-    [Route("Test/Unauth")]
-    public Task<IActionResult> UnauthTest()
-    {
-        return Task.FromResult<IActionResult>(Ok("success :)"));
-    }
 }

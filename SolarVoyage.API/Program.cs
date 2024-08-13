@@ -6,6 +6,8 @@ using SolarVoyage.API;
 using SolarVoyage.Aws.Cognito.Service;
 using SolarVoyage.Core;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 //Setup API config file
 var configFileBasePath = Environment.GetEnvironmentVariable("CONFIG_BASEPATH");
@@ -56,8 +58,20 @@ builder.Services.AddAuthentication(options =>
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            // Note: Amazon Cognito returns the audience "aud" field in the ID Token, but not in the Access Token.
+            // Instead, the audience is specified in the "client_id" field of the Access Token. So you'll have to manually validate the audience.
+            // Second, if the AudienceValidator delegate is specified, it will be called regardless of whether ValidateAudience is set to false.
+            ValidateAudience = true,
+            AudienceValidator = (audiences, securityToken, validationParameters) =>
+            {
+                var castedToken = securityToken as JsonWebToken;
+                var clientId = castedToken?.GetPayloadValue<string>("client_id");
+
+                return string.Equals(configuration.GetSection("AWS:ClientId").Value, clientId);
+            },
             ValidateIssuer = true,
-            ValidIssuer = configuration.GetSection("Cognito:Authority").Value,
+            ValidIssuer = configuration.GetSection("Cognito:Authority").Value
         };
 
     });

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarVoyage.Core.Services.Ships;
 using SolarVoyage.API.DtoModels;
@@ -22,7 +23,7 @@ public class ShipController : ControllerBase
         return Results.Ok(ships);
     }
     
-    
+    [Authorize]
     [HttpPost]
     public async Task<IResult> AddShipAsync([FromBody] Ship shipEntity)
     {
